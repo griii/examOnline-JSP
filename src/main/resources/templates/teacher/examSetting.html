@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>考试系统教师端</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/datepicker3.css" rel="stylesheet">
+    <link href="css/bootstrap-table.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/myCss.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<div>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><span><b>考试系统</b></span>===教师端===</a>
+                <ul class="user-menu">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+        <h2><b style="color: red">欢迎</b> <b id="UserName"></b></h2>
+        <ul class="nav menu">
+            <li><a href="studentTable"><span class="glyphicon glyphicon-list-alt"></span> 学生信息</a></li>
+            <li><a href="examQuestionTable"><span class="glyphicon glyphicon-list-alt"></span> 题库管理</a></li>
+            <li class="active"><a href="examSetting"><span class="glyphicon glyphicon-list-alt"></span> 发布考试</a></li>
+            <li><a href="examTable"><span class="glyphicon glyphicon-list-alt"></span> 查看考试信息</a></li>
+
+        </ul>
+    </div><!--/.sidebar-->
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+                <li class="active">发布考试</li>
+            </ol>
+        </div><!--/.row-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <br>
+              <form>
+                  <b>考试名:</b><input id="examNameSet" type="text">时间限制(分钟):<input id="examTimeSet" type="text"><button onclick="setExam()" type="button">点此发布</button>
+              </form>
+                <br>
+            </div>
+        </div><!--/.row-->
+        <div style="  left: 40px;
+    top: 10px;
+    width:100px;
+    line-height:30px;
+    background: #FC6;
+    border:1px solid #F90">
+
+        </div>
+
+
+        <div style="background: #afd9ee;position:absolute;left: 2%;right: 78%;border: orange">
+            <div id="chooseQuestion">
+               <div style="left: 50%">
+                   <center><h4 >选择题<button value="chooseAllQuestion" onclick="add(this.value)" class="btn btn-primary">添加</button></h4></center>
+               </div>
+            </div>
+           <div id="chooseAllQuestion" class="btn-group">
+               <button id="1" name="chooseQuestion" onclick="set(this)" class="btn btn-default a" style="background: #ffffff">01</button>
+               <button id="2" name="chooseQuestion" onclick="set(this)" class="btn btn-default a" style="background: #ffffff">02</button>
+               <button id="3" name="chooseQuestion" onclick="set(this)" class="btn btn-default a" style="background: #ffffff">03</button>
+               <button id="4" name="chooseQuestion" onclick="set(this)" class="btn btn-default a" style="background: #ffffff">04</button>
+               <button id="5" name="chooseQuestion" onclick="set(this)" class="btn btn-default a" style="background: #ffffff">05</button>
+           </div>
+            <div id="tfQuestion">
+                <div style="left: 50%">
+                    <center><h4 >判断题<button value="tfAllQuestion" onclick="add(this.value)" class="btn btn-primary">添加</button></h4></center>
+                </div>
+            </div>
+            <div id="tfAllQuestion" class="btn-group">
+            </div>
+            <div id="selectQuestion">
+                <div style="left: 50%">
+                    <center><h4 >填空题<button value="selectAllQuestion" onclick="add(this.value)" class="btn btn-primary">添加</button></h4></center>
+                </div>
+            </div>
+            <div id="selectAllQuestion" class="btn-group">
+            </div>
+            <div id="solutionQuestion">
+                <div style="left: 50%">
+                    <center><h4 >简答题<button value="solutionAllQuestion" onclick="add(this.value)" class="btn btn-primary">添加</button></h4></center>
+                </div>
+            </div>
+            <div id="solutionAllQuestion" class="btn-group">
+            </div>
+            <div id="nodeQuestion">
+                <div style="left: 50%">
+                    <center><h4 >代码题<button value="nodeAllQuestion" onclick="add(this.value)" class="btn btn-primary">添加</button></h4></center>
+                </div>
+            </div>
+            <div id="nodeAllQuestion" class="btn-group">
+            </div>
+        </div>
+        <div id="editor" style="position: absolute;left: 21%;right: 50%;background: #66F4DF">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">修改题目       <button onclick="f2()" type="button" class="btn btn-primary">显示/隐藏题库</button><button onclick="deleteQuestion()" class="btn btn-primary">删除该题</button>
+                        </div>
+                        <div class="panel-body">
+                            <div>
+                                <form>
+                                    <div class="form-group">
+                                        <label>考试题号:&nbsp;&nbsp;<b id="examQuestionId"></b><b>&nbsp;&nbsp;该题分数:<input class="input-group-sm" id="questionGrade" type="text"></b></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>题目ID:&nbsp;&nbsp;<b id="questionId"></b>&nbsp;&nbsp;&nbsp;&nbsp;当前总分数:<b id="questionGradeTotal">0</b></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>题型:<b id="questionType"></b></label>
+
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>题目<b id="questionName"></b></label>
+                                    </div>
+                                    <div class="form-group" id="editorQuestionInformation">
+                                        <label>选项</label><br>
+                                        A:<b id="editorQuestionInformationA" class="form-control"></b>B:<b id="editorQuestionInformationB" class="form-control"></b>
+                                        C:<b id="editorQuestionInformationC" class="form-control"></b>D:<b id="editorQuestionInformationD" class="form-control"></b>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>标准答案</label>
+                                        <input  id="editorQuestionSolution1">
+                                        <select class="ui_select01" id="editorQuestionSolution">
+                                            <option>A</option>
+                                            <option>B</option>
+                                            <option>C</option>
+                                            <option>D</option>
+                                        </select>												</div>
+                                    <button type="button" onclick="f4()" class="btn btn-primary">确认</button><b>确认后,会向试卷中添加该题目</b>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div><!-- /.col-->
+                </div><!-- /.row -->
+            </div>
+
+            <form hidden id="deleteQuestion" action="deleteQuestion">
+                <input name="questionId" id="deleteQuestionId">
+            </form>
+        </div>
+
+        <div class="panel-body" id="all" style="position: absolute;left: 50%;background: #66F4DF">
+            <table id="table" data-toggle="table" data-url="findAllQuestion"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="id" data-sort-order="desc">
+            </table>
+        </div>
+
+    </div><!--/.main-->
+</div>
+
+<form id="examSetting" hidden action="examSet">
+    <input name="examName" id="examName">
+    <input name= "examQuestion" id="examQuestion">
+    <input name="examTime" id="examTime">
+</form>
+
+
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/chart.min.js"></script>
+<script src="js/chart-data.js"></script>
+<script src="js/easypiechart.js"></script>
+<script src="js/easypiechart-data.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-table.js"></script>
+
+<script>
+    function deleteQuestion() {
+        var examQuestionId = document.getElementById("examQuestionId").innerText;
+        console.log(examQuestionId);
+        var tf = confirm("确定要删除题号是"+examQuestionId+"的题目?")
+        if (tf == false)
+            return ;
+        var examQuestion = document.getElementById(examQuestionId);
+        examQuestion.parentNode.removeChild(examQuestion);
+        var b = document.getElementsByClassName("btn btn-default a");
+        for (var index=0 ; index<b.length ; index++){
+
+            console.log(b[index].id.length+""+examQuestionId.toString().length);
+            console.log(b[index].id + "和" + examQuestionId+"比较"+(b[index].id > examQuestionId || b[index].id.length > examQuestion.length));
+
+            if (b[index].id > examQuestionId || b[index].id.length > examQuestionId.length){
+                b[index].id -- ;
+                if (b[index].innerHTML=="10"){
+                    b[index].innerHTML = "09";
+                }else{
+                    if (b[index].innerHTML[0]=="0"){
+                        b[index].innerHTML = "0"+(b[index].innerHTML[1]-1);
+                    }else{
+                        b[index].innerHTML--;
+                    }
+                }
+            }
+        }
+    }
+
+    function setExam() {
+        if (document.getElementById("examNameSet").value == ""){
+            alert("请输入考试名");
+            return;
+        }
+        if (document.getElementById("examTimeSet").value == ""){
+            alert("请输入考试限时");
+            return;
+        }
+        var examQuestion = "";
+        var tr = document.getElementsByClassName("btn btn-default a");
+        for (var index=0;index<tr.length;index++){
+            console.log(tr[index].value);
+            if (tr[index].value == ""){
+                alert("考试题号"+tr[index].id+"还没有添加对应题目,请 添加/删除 后再执行发布！")
+                return;
+            }
+            examQuestion += tr[index].value +"||";
+
+        }
+        var s = document.getElementById("examSetting");
+        document.getElementById("examName").value = document.getElementById("examNameSet").value;
+        document.getElementById("examTime").value = document.getElementById("examTimeSet").value;
+        document.getElementById("examQuestion").value = examQuestion;
+        s.submit();
+
+    }
+
+    function f2() {
+        var f = document.getElementById("all");
+        if (f.hidden == true)
+            f.hidden = false;
+        else
+            f.hidden = true;
+    }
+    function f4() {
+        var g = document.getElementById("questionGrade");
+        if (g.value == ""){
+            alert("请输入该题所占分数！");
+            return;
+        }
+        if (document.getElementById("examQuestionId")==null || document.getElementById("questionId") == null){
+            alert("请先在题库中查找题目并添加到界面后再点击确定！")
+            return ;
+        }
+        var examQuestionId = document.getElementById("examQuestionId").innerText;
+        var questionId = document.getElementById("questionId").innerText;
+        console.log(questionId +"" +
+            examQuestionId);
+        var questionButton = document.getElementById(examQuestionId);
+        questionButton.value = examQuestionId+"$"+ parseInt(g.value);
+        questionButton.style.background = "#1c6a9e";
+        var gt = document.getElementById("questionGradeTotal");
+        gt.innerText = parseInt(gt.innerText) + parseInt(g.value);
+        g.value = "";
+        questionId = "";
+        document.getElementById("questionId").innerText = "";
+        document.getElementById("questionName").innerText = "";
+
+    }
+    
+    function sh() {
+        var tr = document.getElementsByTagName("tr");
+        for (var index=0;index<tr.length;index++){
+            tr[index].hidden = false;
+        }
+    }
+    
+    function set(obj) {
+        sh();
+        document.getElementById("examQuestionId").innerText = obj.id;
+        var tr = document.getElementsByTagName("tr");
+        for (var index = 0;index<tr.length;index++){
+            switch (obj.name) {
+                case "chooseQuestion":
+                    if (tr[index].childNodes[3].innerText != "选择题" && tr[index].childNodes[3].innerText!="类型")
+                        tr[index].hidden = true;
+                    break;
+                case "tfQuestion":
+                    if (tr[index].childNodes[3].innerText != "判断题" && tr[index].childNodes[3].innerText!="类型")
+                        tr[index].hidden = true;
+                    break;
+                case "selectQuestion":
+                    if (tr[index].childNodes[3].innerText != "填空题" && tr[index].childNodes[3].innerText!="类型")
+                        tr[index].hidden = true;
+                    break;
+                case "solutionQuestion":
+                    if (tr[index].childNodes[3].innerText != "简答题" && tr[index].childNodes[3].innerText!="类型")
+                        tr[index].hidden = true;
+                    break;
+                case "nodeQuestion":
+                    if (tr[index].childNodes[3].innerText != "代码题" && tr[index].childNodes[3].innerText!="类型")
+                        tr[index].hidden = true;
+                    break;
+            }
+        }
+
+
+    }
+
+    function add(obj) {
+        var name = obj.replace("All","");
+        var all = document.getElementsByClassName("btn btn-default a");
+        var length = all.length;
+        var list = document.getElementById(obj);
+        var c = document.createAttribute("class");
+        c.nodeValue="btn btn-default a";
+        var o = document.createAttribute("onclick");
+        o.nodeValue="set(this)";
+        var n = document.createAttribute("name");
+        n.nodeValue=name;
+        var i = document.createAttribute("id");
+        i.nodeValue=length+1;
+        var button = document.createElement("button");
+        button.setAttributeNode(c);
+        button.setAttributeNode(o);
+        button.setAttributeNode(n);
+        button.setAttributeNode(i);
+        var x = length+1;
+        if (x<10){
+            x = "0"+x.toString();
+        }
+        var s = document.createAttribute("style");
+        s.nodeValue="background: #ffffff";
+        button.setAttributeNode(s);
+        button.appendChild(document.createTextNode(x));
+        list.appendChild(button);
+    }
+    welcome();
+    function welcome(){
+        $.ajax({
+            url: "/exam/getUserTeacherName",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                document.getElementById("UserName").innerText = data.msg;
+            }
+        })
+    }
+
+    function addFunctionAlty(value, row, index) {
+        return [
+            '<button id="bind" type="button" class="btn btn-default">选择</button>',
+        ].join('');
+    }
+    window.operateEvents = {
+        'click #bind': function (e, value, row, index) {
+            var editorQuestionSolution1 = document.getElementById("editorQuestionSolution1");
+            var editorForm = document.getElementById("editor");
+            var all = document.getElementById("all");
+            var editorQuestionInformationA = document.getElementById("editorQuestionInformationA");
+            var editorQuestionInformationB = document.getElementById("editorQuestionInformationB");
+            var editorQuestionInformationC = document.getElementById("editorQuestionInformationC");
+            var editorQuestionInformationD = document.getElementById("editorQuestionInformationD");
+            var editorQuestionId = document.getElementById("editorQuestionId");
+            var editorQuestionName = document.getElementById("editorQuestionName");
+            var editorQuestionType = document.getElementById("editorQuestionType");
+            var editorQuestionInformation = document.getElementById("editorQuestionInformation");
+            var editorQuestionSolution = document.getElementById("editorQuestionSolution");
+            $.ajax({
+                url: "/exam/teacher/questionTableEditor/"+row.questionId,
+                type: "get",
+                dataType: 'json',
+                success: function(data){
+                    document.getElementById("questionId").innerText = data.questionId;
+                    document.getElementById("questionType").innerText = data.questionType;
+                    document.getElementById("questionName").innerText = data.questionName;
+                    if (data.questionType!="选择题"){
+                        editorQuestionSolution1.hidden = false;
+                        editorQuestionSolution.hidden = true;
+                        editorQuestionInformation.hidden = true;
+                        editorQuestionSolution1.value = row.questionSolution;
+                    }else{
+                        editorQuestionSolution1.hidden = true;
+                        editorQuestionSolution.hidden = false;
+                        var y = 0;
+                        var count = 1;
+                        for(var x=0;x<data.questionInformation.length;x++){
+                            if (data.questionInformation.substring(x,x+2)=="||"){
+                                switch (count) {
+                                    case 1:
+                                        editorQuestionInformationA.innerText = data.questionInformation.substring(y,x);
+                                        break;
+                                    case 2:
+                                        editorQuestionInformationB.innerText = data.questionInformation.substring(y,x);
+                                        break;
+                                    case 3:
+                                        editorQuestionInformationC.innerText = data.questionInformation.substring(y,x);
+                                        break;
+                                    case 4:
+                                        editorQuestionInformationD.innerText = data.questionInformation.substring(y,x);
+                                        break;
+                                }
+                                x+=2;
+                                y=x;
+                                count++;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    $('#table').bootstrapTable({
+        columns: [{
+            checkbox: true
+        }, {
+            field: 'questionId',
+            title: 'ID',
+        }, {
+            field: 'questionName',
+            title: '题目',
+        }, {
+            field: 'questionType',
+            title: '类型',
+        }, {
+            field: 'operate',
+            title: '操作',
+            events: operateEvents,//给按钮注册事件
+            formatter: addFunctionAlty//表格中增加按钮  
+        }]
+    });
+
+</script>
+</body>
+
+</html>

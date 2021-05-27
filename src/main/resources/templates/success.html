@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" page isELIgnore="false">
+    <title>Title</title>
+</head>
+<body>
+<form id="login">
+    <b>asd<b>asd</b></b>
+    <b>asd</b>
+    <p th:text="asd">中国</p>
+    <p th:text="asd">中国</p>
+    <input type="text" name="studentId" id="i">
+    <input type="password" name="password" id="p">
+    <button onclick="login()">登录</button>
+</form>
+<iframe src="logining"></iframe>
+<div id="questionList">
+    <h1>测试</h1>
+</div>
+<select>
+    <option value="6">-----</option>
+    <option value="11">选择</option>
+</select>
+</body>
+<script>
+
+    var list = document.getElementById("questionList");
+    var l = document.createElement()
+    list.appendChild();
+
+    ['<button id="bind" type="button" class="btn btn-primary">编辑</button>'].join("");
+        document.getElementById("22").innerText = "";
+    var hd = document.getElementById("hd");
+    hd.hidden = false;
+
+    function init() {
+        return 0;
+        alert ("测试");
+    }
+    init();
+    function login() {
+        var i;
+        i = document.getElementById("i").value;
+        if (i.length<5){
+            alert("账户长度太短了!!");
+            return 0;
+        }else if(i/1 != i){
+            return 0;
+        }else if(i.length>15){
+            alert("学号太长了!!")
+            return 0;
+        }
+            alert("全部没错!!");
+            var l = document.getElementById("login");
+            l.action = "teacher/teacherLogining";
+            l.submit;
+    }
+
+</script>
+
+</html>

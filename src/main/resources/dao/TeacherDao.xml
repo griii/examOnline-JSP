@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guorui.springboottest03.dao.TeacherDao">
+
+    <select id="findAllStudent" resultType="com.guorui.springboottest03.bean.Student">
+        select * from student
+    </select>
+
+    <select id="loginId" resultType="com.guorui.springboottest03.bean.Teacher">
+    select * from teacher where ID=#{ID}
+    </select>
+
+    <select id="loginP" resultType="com.guorui.springboottest03.bean.Teacher">
+    select * from teacher where ID=#{ID} and password=#{password}
+    </select>
+
+    <select id="findStudent" resultType="com.guorui.springboottest03.bean.Student">
+        select * from student where ID=#{ID}
+    </select>
+
+    <delete id="deleteStudent">
+        delete from student where ID=#{ID}
+    </delete>
+
+    <update id="killP">
+        update student set password='00000000'
+    </update>
+
+    <select id="findAllQuestion" resultType="com.guorui.springboottest03.bean.Question">
+        select * from examquestions
+    </select>
+
+    <delete id="deleteQuestion">
+        delete from examquestions where questionId=#{ID}
+    </delete>
+
+    <select id="findQuestion" resultType="com.guorui.springboottest03.bean.Question">
+        select * from examquestions where questionId=#{questionId}
+    </select>
+
+    <update id="questionUpdata" parameterType="com.guorui.springboottest03.bean.Question">
+        update examquestions set questionName=#{questionName},questionType=#{questionType},questionInformation=#{questionInformation},questionSolution=#{questionSolution} where questionId=#{questionId}
+    </update>
+
+    <insert id="examInsert" parameterType="com.guorui.springboottest03.bean.Exam">
+        insert into examination(examName,examTime,examSetter,examQuestion) values (#{examName},#{examTime},#{examSetter},#{examQuestion})
+    </insert>
+
+    <select id="findAllExam" resultType="com.guorui.springboottest03.bean.Exam">
+        select * from examination
+    </select>
+</mapper>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>考试系统教师端</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/datepicker3.css" rel="stylesheet">
+	<link href="css/bootstrap-table.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+	<link href="css/myCss.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+
+<div>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><span><b>考试系统</b></span>===教师端===</a>
+				<ul class="user-menu">
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+							<li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+							<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+		</div><!-- /.container-fluid -->
+	</nav>
+
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<h2><b style="color: red">欢迎</b> <b id="UserName"></b></h2>
+		<ul class="nav menu">
+			<li><a href="studentTable"><span class="glyphicon glyphicon-list-alt"></span> 学生信息</a></li>
+			<li class="active"><a href="examQuestionTable"><span class="glyphicon glyphicon-list-alt"></span> 题库管理</a></li>
+			<li><a href="examSetting"><span class="glyphicon glyphicon-list-alt"></span> 发布考试</a></li>
+			<li><a href="examTable"><span class="glyphicon glyphicon-list-alt"></span> 查看考试信息</a></li>
+		</ul>
+	</div><!--/.sidebar-->
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+				<li class="active">题库管理</li>
+			</ol>
+		</div><!--/.row-->
+
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">题库管理</h1>
+			</div>
+		</div><!--/.row-->
+		<div style="  left: 40px;
+    top: 10px;
+    width:100px;
+    line-height:30px;
+    background: #FC6;
+    border:1px solid #F90">
+
+		</div>
+
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">题库管理</div>
+					<div id="editor" hidden style="align-content: center">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="panel panel-default">
+									<div class="panel-heading">修改题目       <button onclick="f2()" type="button" class="btn btn-default">返回题库列表</button>
+									</div>
+									<div class="panel-body">
+										<div class="col-md-6">
+											<form>
+												<div class="form-group">
+													<label>题号</label>
+													<b id="editorQuestionId"></b>
+												</div>
+												<div class="form-group">
+													<label>题型:</label>
+													<select id="editorQuestionType">
+														<option value="选择题" name="name" id="id">选择题</option>
+														<option>判断题</option>
+														<option>填空题</option>
+														<option>简答题</option>
+														<option>代码题</option>
+													</select>
+
+												</div>
+												<div class="form-group">
+													<label>题目</label>
+													<input class="form-control" name="editorQuestionName" placeholder="Placeholder" id="editorQuestionName">
+												</div>
+												<div class="form-group" id="editorQuestionInformation">
+													<label>选项</label><br>
+													<b>A:</b><input id="editorQuestionInformationA" class="form-control"><b>B:</b><input id="editorQuestionInformationB" class="form-control">
+													<b>C:</b><input id="editorQuestionInformationC" class="form-control"><b>D:</b><input id="editorQuestionInformationD" class="form-control">
+												</div>
+												<div class="form-group">
+													<label>标准答案</label>
+													<input  id="editorQuestionSolution1">
+													<select class="ui_select01" id="editorQuestionSolution">
+														<option>A</option>
+														<option>B</option>
+														<option>C</option>
+														<option>D</option>
+													</select>												</div>
+												<button type="button" onclick="f4()" class="btn btn-primary">确认修改</button>
+												<button onclick="f2()" type="button" class="btn btn-default">取消</button>
+
+											</form>
+
+										</div>
+									</div>
+								</div><!-- /.col-->
+							</div><!-- /.row -->
+						</div>
+
+						<form hidden id="deleteQuestion" action="deleteQuestion">
+							<input name="questionId" id="deleteQuestionId">
+						</form>
+					</div>
+
+					<div class="panel-body" id="all">
+						<table id="table" data-toggle="table" data-url="findAllQuestion"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="id" data-sort-order="desc">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div><!--/.row-->
+	</div><!--/.main-->
+</div>
+
+<form id="editorForm" action="questionUpdata" hidden>
+	<input id="questionId" name="questionId">
+	<input id="questionName" name="questionName">
+	<input id="questionType" name="questionType">
+	<input id="questionInformation" name="questionInformation">
+	<input id="questionSolution" name="questionSolution">
+	<button type="button" onclick="f4()"></button>
+</form>
+
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/chart.min.js"></script>
+<script src="js/chart-data.js"></script>
+<script src="js/easypiechart.js"></script>
+<script src="js/easypiechart-data.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-table.js"></script>
+
+<script>
+	welcome();
+	function f() {
+		document.getElementById("editorStudentP").type = "text";
+	}
+	function f1() {
+		document.getElementById("editorStudentP").type = "password";
+	}
+	function f2() {
+		document.getElementById("editor").hidden = true;
+		document.getElementById("all").hidden = false;
+	}
+
+	function f4() {
+		var editorQuestionSolution1 = document.getElementById("editorQuestionSolution1");
+		var editorForm = document.getElementById("editorForm");
+		var editorQuestionInformationA = document.getElementById("editorQuestionInformationA");
+		var editorQuestionInformationB = document.getElementById("editorQuestionInformationB");
+		var editorQuestionInformationC = document.getElementById("editorQuestionInformationC");
+		var editorQuestionInformationD = document.getElementById("editorQuestionInformationD");
+		var editorQuestionId = document.getElementById("editorQuestionId");
+		var editorQuestionName = document.getElementById("editorQuestionName");
+		var editorQuestionType = document.getElementById("editorQuestionType");
+		var editorQuestionInformation = document.getElementById("editorQuestionInformation");
+		var editorQuestionSolution = document.getElementById("editorQuestionSolution");
+		var questionId = document.getElementById("questionId");
+		var questionName = document.getElementById("questionName");
+		var questionType = document.getElementById("questionType");
+		var questionInformation = document.getElementById("questionInformation");
+		var questionSolution = document.getElementById("questionSolution");
+		if (editorQuestionType.options[0].selected == true){
+			questionType.value = "选择题";
+		}
+		if (editorQuestionType.options[1].selected == true){
+			questionType.value = "判断题";
+		}
+		if (editorQuestionType.options[2].selected == true){
+			questionType.value = "填空题";
+		}
+		if (editorQuestionType.options[3].selected == true){
+			questionType.value = "简答题";
+		}
+		if (editorQuestionType.options[4].selected == true){
+			questionType.value = "代码题";
+		}
+		if (editorQuestionSolution.hidden == false){
+			questionInformation.value = editorQuestionInformationA.value+"||"+editorQuestionInformationB.value+"||"+editorQuestionInformationC.value+"||"+editorQuestionInformationD.value+"||";
+
+			if (editorQuestionSolution.options[0].selected == true){
+			questionSolution.value = "A";
+		}if (editorQuestionSolution.options[1].selected == true){
+			questionSolution.value = "B";
+		}if (editorQuestionSolution.options[2].selected == true){
+			questionSolution.value = "C";
+		}if (editorQuestionSolution.options[3].selected == true){
+			questionSolution.value = "D";
+		}}else{
+			questionSolution.value = editorQuestionSolution1.value;
+		}
+		questionId.value = editorQuestionId.innerText;
+		questionName.value = editorQuestionName.value;
+		editorForm.submit();
+	}
+
+	function welcome(){
+		$.ajax({
+			url: "/exam/getUserTeacherName",
+			type: "get",
+			dataType: "json",
+			success: function (data) {
+				document.getElementById("UserName").innerText = data.msg;
+			}
+		})
+	}
+
+
+	!function ($) {
+		$(document).on("click","ul.nav li.parent > a > span.icon", function(){
+			$(this).find('em:first').toggleClass("glyphicon-minus");
+		});
+		$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+	}(window.jQuery);
+
+	$(window).on('resize', function () {
+		if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+	})
+	$(window).on('resize', function () {
+		if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+	})
+</script>
+<script>
+	function addFunctionAlty(value, row, index) {
+		return [
+			'<button id="bind" type="button" class="btn btn-primary">编辑</button>',
+			'<button id="unbind" type="button" class="btn btn-default">删除</button>',
+		].join('');
+	}
+	window.operateEvents = {
+		'click #bind': function (e, value, row, index) {
+			var editorQuestionSolution1 = document.getElementById("editorQuestionSolution1");
+			var editorForm = document.getElementById("editor");
+			var all = document.getElementById("all");
+			var editorQuestionInformationA = document.getElementById("editorQuestionInformationA");
+			var editorQuestionInformationB = document.getElementById("editorQuestionInformationB");
+			var editorQuestionInformationC = document.getElementById("editorQuestionInformationC");
+			var editorQuestionInformationD = document.getElementById("editorQuestionInformationD");
+			var editorQuestionId = document.getElementById("editorQuestionId");
+			var editorQuestionName = document.getElementById("editorQuestionName");
+			var editorQuestionType = document.getElementById("editorQuestionType");
+			var editorQuestionInformation = document.getElementById("editorQuestionInformation");
+			var editorQuestionSolution = document.getElementById("editorQuestionSolution");
+			$.ajax({
+				url: "/exam/teacher/questionTableEditor/"+row.questionId,
+				type: "get",
+				dataType: 'json',
+				success: function(data){
+					if (data.questionType!="选择题"){
+						editorQuestionSolution1.hidden = false;
+						editorQuestionSolution.hidden = true;
+						editorQuestionInformation.hidden = true;
+						editorQuestionSolution1.value = row.questionSolution;
+					}else{
+						editorQuestionSolution1.hidden = true;
+						editorQuestionSolution.hidden = false;
+						var y = 0;
+						var count = 1;
+						for(var x=0;x<data.questionInformation.length;x++){
+						if (data.questionInformation.substring(x,x+2)=="||"){
+							switch (count) {
+								case 1:
+									editorQuestionInformationA.value = data.questionInformation.substring(y,x);
+									break;
+								case 2:
+									editorQuestionInformationB.value = data.questionInformation.substring(y,x);
+									break;
+								case 3:
+									editorQuestionInformationC.value = data.questionInformation.substring(y,x);
+									break;
+								case 4:
+									editorQuestionInformationD.value = data.questionInformation.substring(y,x);
+									break;
+							}
+							x+=2;
+							y=x;
+							count++;
+						}
+						};
+						editorQuestionInformation.hidden = false;
+
+						switch (data.questionSolution) {
+							case "A":
+								editorQuestionSolution.options[0].selected = true;
+								break;
+							case "B":
+								editorQuestionSolution.options[1].selected = true;
+								break;
+							case "C":
+								editorQuestionSolution.options[2].selected = true;
+								break;
+							case "D":
+								editorQuestionSolution.options[3].selected = true;
+								break;
+						}
+					}
+
+					editorQuestionId.innerText = data.questionId;
+					editorQuestionName.value = data.questionName;
+					switch (data.questionType) {
+						case "选择题":
+							editorQuestionType.options[0].selected=true;
+							break;
+						case "判断题":
+							editorQuestionType.options[1].selected=true;
+							break;
+						case "填空题":
+							editorQuestionType.options[2].selected=true;
+							break;
+						case "简答题":
+							editorQuestionType.options[3].selected=true;
+							break;
+						case "代码题":
+							editorQuestionType.options[4].selected=true;
+							break;
+					}
+
+
+					editorQuestionInformation.value = data.questionInformation;
+
+					all.hidden = true;
+					editorForm.hidden = false;
+				}
+			});
+		}, 'click #unbind': function (e, value, row, index) {
+			var r = confirm("确定要删除题号是"+row.questionId+"的题目的全部记录吗?")
+			if (r==true){
+				alert(row.questionId);
+
+				document.getElementById("deleteQuestionId").value = row.questionId;
+				document.getElementById("deleteQuestion").submit();
+			}
+	}}
+
+	$('#table').bootstrapTable({
+		columns: [{
+			checkbox: true
+		}, {
+			field: 'questionId',
+			title: 'ID',
+		}, {
+			field: 'questionName',
+			title: '题目',
+		}, {
+			field: 'questionType',
+			title: '类型',
+		}, {
+			field: 'operate',
+			title: '操作',
+			events: operateEvents,//给按钮注册事件
+			formatter: addFunctionAlty//表格中增加按钮  
+		}]
+	});
+</script>
+</body>
+</html>
