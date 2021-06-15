@@ -31,7 +31,7 @@
 							<label>密码 <a href="#" class="forgot-link"></a></label>
 							<input id="loginP" type="password" name="password" autocomplete="current-password" class="lowin-input">
 						</div>
-						<button onclick="login()" class="lowin-btn login-btn">登录</button>
+						<button type="button" onclick="login()" class="lowin-btn login-btn">登录</button>
 
 						<div class="text-foot">
 							还没有账户？ <a href="" class="register-link">点此注册</a>
@@ -44,55 +44,82 @@
 				<div class="lowin-box-inner">
 					<form id="register">
 						<p>请输入信息注册您的账户</p>
+						<b hidden id="rMsg" style="color: red;text-align: center"></b>
 						<div class="lowin-group">
 							<label>姓名</label>
-							<input  type="text" name="name" autocomplete="name" class="lowin-input">
+							<input  type="text" id="rName" name="name" autocomplete="name" class="lowin-input">
 						</div>
 						<div class="lowin-group">
 							<label>学号</label>
-							<input type="text" name="studentId" class="lowin-input">
+							<input type="text" id="rId" name="studentId" class="lowin-input">
 						</div>
 						<div class="lowin-group">
 							<label>密码</label>
-							<input type="password" name="password" autocomplete="current-password" class="lowin-input">
+							<input type="password" id="rPassword" name="password" autocomplete="current-password" class="lowin-input">
 						</div>
-						<button onclick="register()" class="lowin-btn">
+						<button type="button" onclick="register()" class="lowin-btn">
 							注册
 						</button>
 
 						<div class="text-foot">
-						已经拥有账户了?<a href="" class="login-link">直接登录</a>
+						已经拥有账户了?<a id="gotoLogin" href="" class="login-link">直接登录</a>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
+		<form action="student/studentHome" id="studentHome"></form>
 		<footer class="lowin-footer">
 		=======================================福建师范大学学生考试系统=======================================
 			</footer>
 	</div>
-
-
-
+=
+	<script src="webjars/jquery/3.0.0/jquery.js"></script>
 	<script src="login/auth.js"></script>
 	<script>
 
 
 
-		setInterval(loginIdTest,500);
 		Auth.init({
 			login_url: 'logining',
 		});
-		function loginIdTest(){
-			var loginI = document.getElementById("loginI").value;
-			var MsgI = document.getElementById("iMsg");
-			if (loginI.length !=12 || loginI/loginI != 1){
-				MsgI.hidden = false;
-				MsgI.innerText = "*请输入正确的学号*";
-			}else{
-				MsgI.hidden = true;
-			}
+
+		function register(){
+			var id = document.getElementById("rId").value;
+			var password = document.getElementById("rPassword").value;
+			var name = document.getElementById("rName").value;
+			$.ajax({
+				url: "/exam/studentRegister?id="+id+"&password="+password + "&name=" + name,
+				type: "get",
+				success: function (data) {
+					var msg = document.getElementById("rMsg");
+					msg.innerText = data;
+					msg.hidden = false
+					console.log("跳转...")
+					if (data == "注册成功!")
+						$("#gotoLogin")[0].click();
+				}
+			});
 		}
+
+		function login() {
+			var id = document.getElementById("loginI").value;
+			var password = document.getElementById("loginP").value;
+			$.ajax({
+				url: "/exam/studentLogining?studentId="+id+"&password="+password,
+				type: "get",
+				dataType: "json",
+				success: function (data) {
+					var msg = document.getElementById("iMsg");
+					msg.innerText = data.msg;
+					msg.hidden = false
+					console.log("跳转...")
+					if (data.msg != "学号不存在!!!" && data.msg !="密码错误!!!")
+						document.getElementById("studentHome").submit();
+				}
+			});
+		}
+
 	</script>
 </body>
 </html>

@@ -45,10 +45,24 @@
     </update>
 
     <insert id="examInsert" parameterType="com.guorui.springboottest03.bean.Exam">
-        insert into examination(examName,examTime,examSetter,examQuestion) values (#{examName},#{examTime},#{examSetter},#{examQuestion})
+        insert into examination(examName,examTime,examSetter,examQuestion,examStartTime)
+        values (#{examName},#{examTime},#{examSetter},#{examQuestion},#{examStartTime})
     </insert>
 
     <select id="findAllExam" resultType="com.guorui.springboottest03.bean.Exam">
         select * from examination
     </select>
+
+    <select id="findAllExamInfor" resultType="com.guorui.springboottest03.bean.ExamStudentInfor">
+        select examId,a.studentId,name,sex,score from (
+                select examinfor.examId,studentId,score from examination left join examinfor on
+                examination.examId = examinfor.examId
+                where examinfor.examId = #{examId}
+            )a , student
+        where a.studentId = student.ID
+    </select>
+
+    <update id="updateStudent" parameterType="com.guorui.springboottest03.bean.Student">
+        update student set ID=#{ID},name = #{name},sex=#{sex},password=#{password} where ID = #{ID}
+    </update>
 </mapper>

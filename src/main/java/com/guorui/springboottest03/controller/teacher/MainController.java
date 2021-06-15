@@ -1,9 +1,6 @@
 package com.guorui.springboottest03.controller.teacher;
 
-import com.guorui.springboottest03.bean.Exam;
-import com.guorui.springboottest03.bean.Question;
-import com.guorui.springboottest03.bean.Result;
-import com.guorui.springboottest03.bean.Student;
+import com.guorui.springboottest03.bean.*;
 import com.guorui.springboottest03.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -44,7 +41,7 @@ public class MainController {
                                 @RequestParam("editorStudentSex") String sex,
                                 @RequestParam("editorStudentName") String name,
                                 @RequestParam("editorStudentP") String password){
-        System.out.println(id+""+sex+""+name+password);
+        teacherService.updateStudent(new Student(id,name,sex,password));
         return "redirect:/teacher/studentTable";
     }
 
@@ -80,20 +77,15 @@ public class MainController {
         return teacherService.findQuestion(id);
     }
 
-    @RequestMapping(value = "/teacher/questionUpdata",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
-
-    )
-    public String questionUpdata(@RequestBody(required = false) Question question){
+    @RequestMapping(value = "/teacher/questionUpdata")
+    public String questionUpdata(Question question){
         System.out.println(question);
         teacherService.questionUpdata(question);
         return "redirect:/teacher/examQuestionTable";
     }
     @RequestMapping("/teacher/examSet")
     public String examSetting(Exam exam,String examName,String examQuestion,HttpSession session){
-        exam.setExamSetter(session.getAttribute("name").toString());
+            exam.setExamSetter(session.getAttribute("name").toString());
             System.out.println(exam);
             teacherService.examInsert(exam);
         return "redirect:/teacher/examSetting"; }
@@ -102,6 +94,14 @@ public class MainController {
     public List<Exam> findAllExam(){
         return teacherService.findAllExam();
     }
+
+
+    @ResponseBody
+    @RequestMapping("/teacher/findAllExamInfor")
+    public ExamStudentInfor[] findAllExamInfor(int examId){
+        return teacherService.findAllExamInfor(examId);
+    }
+
 }
 
 

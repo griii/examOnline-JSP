@@ -1,9 +1,6 @@
 package com.guorui.springboottest03.dao;
 
-import com.guorui.springboottest03.bean.Exam;
-import com.guorui.springboottest03.bean.Question;
-import com.guorui.springboottest03.bean.Student;
-import com.guorui.springboottest03.bean.Teacher;
+import com.guorui.springboottest03.bean.*;
 import org.springframework.beans.factory.parsing.QualifierEntry;
 
 import java.util.List;
@@ -35,5 +32,9 @@ public interface TeacherDao {
 
     void examInsert(Exam exam);
 
+    ExamStudentInfor[] findAllExamInfor(int examId);
+
     List<Exam> findAllExam();
+
+    void updateStudent(Student student);
 }

@@ -1,9 +1,6 @@
 package com.guorui.springboottest03.service;
 
-import com.guorui.springboottest03.bean.Exam;
-import com.guorui.springboottest03.bean.Question;
-import com.guorui.springboottest03.bean.Student;
-import com.guorui.springboottest03.bean.Teacher;
+import com.guorui.springboottest03.bean.*;
 import com.guorui.springboottest03.dao.TeacherDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +51,10 @@ public class TeacherService {
 
     public void questionUpdata(Question question){teacherDao.questionUpdata(question);}
 
+    public void updateStudent(Student student){
+        teacherDao.updateStudent(student);
+    }
+
     public void examInsert(Exam exam){
         teacherDao.examInsert(exam);
     }
@@ -61,4 +62,9 @@ public class TeacherService {
     public List<Exam> findAllExam(){
         return teacherDao.findAllExam();
     }
+
+    public ExamStudentInfor[] findAllExamInfor(int examId){
+        return teacherDao.findAllExamInfor(examId);
+    }
+
 }

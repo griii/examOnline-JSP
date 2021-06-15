@@ -7,9 +7,13 @@ public class Student {
     private String sex;
     private String password;
 
-    public Student(){
+    public Student(String ID, String name, String sex, String password) {
+        this.ID = ID;
+        this.name = name;
+        this.sex = sex;
+        this.password = password;
+    }
 
-    };
     public Student(String ID){
         this.ID = ID;
     }

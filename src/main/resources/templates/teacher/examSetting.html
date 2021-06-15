@@ -68,7 +68,7 @@
             <div class="col-lg-12">
                 <br>
               <form>
-                  <b>考试名:</b><input id="examNameSet" type="text">时间限制(分钟):<input id="examTimeSet" type="text"><button onclick="setExam()" type="button">点此发布</button>
+                  <b>考试名:</b><input id="examNameSet" type="text">时间限制(分钟):<input id="examTimeSet" type="text">考试开始时间:<input id="examTimeStart" type="datetime-local"><button onclick="setExam()" type="button">点此发布</button>  总题数:<input id="count" type="number"><button onclick="setExamQuick()" type="button">快速组卷发布</button>
               </form>
                 <br>
             </div>
@@ -189,6 +189,7 @@
     <input name="examName" id="examName">
     <input name= "examQuestion" id="examQuestion">
     <input name="examTime" id="examTime">
+    <input name="examStartTime" id="examTimeStart1">
 </form>
 
 
@@ -202,6 +203,9 @@
 <script src="js/bootstrap-table.js"></script>
 
 <script>
+    var questionDic = {};
+
+
     function deleteQuestion() {
         var examQuestionId = document.getElementById("examQuestionId").innerText;
         console.log(examQuestionId);
@@ -231,6 +235,40 @@
         }
     }
 
+    function setExamQuick() {
+        if (document.getElementById("examNameSet").value == ""){
+            alert("请输入考试名");
+            return;
+        }
+        if (document.getElementById("examTimeSet").value == ""){
+            alert("请输入考试限时");
+            return;
+        }
+        if (document.getElementById("examTimeStart").value == ""){
+            alert("请输入考试开始时间")
+            return;
+        }
+        if (document.getElementById("count").value == ""){
+            alert("请输入快速组卷总题数")
+            return;
+        }
+        var count = document.getElementById("count").value;
+        var examQuestion = "";
+        console.log(count)
+        var oneScore = 100/count;
+        for (var i = 0;i<count;i++){
+            var qId = Math.trunc(Math.random()*900 + 50)
+            examQuestion += qId + "$" + oneScore + "||";
+        }
+        var s = document.getElementById("examSetting");
+        document.getElementById("examName").value = document.getElementById("examNameSet").value;
+        document.getElementById("examTime").value = document.getElementById("examTimeSet").value;
+        document.getElementById("examQuestion").value = examQuestion;
+        document.getElementById("examTimeStart1").value = document.getElementById("examTimeStart").value;
+        console.log(document.getElementById("examTimeStart1").value)
+        s.submit();
+    }
+
     function setExam() {
         if (document.getElementById("examNameSet").value == ""){
             alert("请输入考试名");
@@ -238,6 +276,10 @@
         }
         if (document.getElementById("examTimeSet").value == ""){
             alert("请输入考试限时");
+            return;
+        }
+        if (document.getElementById("examTimeStart").value == ""){
+            alert("请输入考试开始时间")
             return;
         }
         var examQuestion = "";
@@ -248,15 +290,17 @@
                 alert("考试题号"+tr[index].id+"还没有添加对应题目,请 添加/删除 后再执行发布！")
                 return;
             }
-            examQuestion += tr[index].value +"||";
-
+            var q = tr[index].value;
+            var s = q.indexOf("$");
+            q = questionDic[q.substring(0,s)] + "" + q.substring(s,q.length);
+            examQuestion += q +"||";
         }
         var s = document.getElementById("examSetting");
         document.getElementById("examName").value = document.getElementById("examNameSet").value;
         document.getElementById("examTime").value = document.getElementById("examTimeSet").value;
         document.getElementById("examQuestion").value = examQuestion;
+        document.getElementById("examTimeStart1").value = document.getElementById("examTimeStart").value;
         s.submit();
-
     }
 
     function f2() {
@@ -280,6 +324,9 @@
         var questionId = document.getElementById("questionId").innerText;
         console.log(questionId +"" +
             examQuestionId);
+        questionDic[examQuestionId] = questionId;
+        console.log(questionDic.toString());
+        console.log(questionDic)
         var questionButton = document.getElementById(examQuestionId);
         questionButton.value = examQuestionId+"$"+ parseInt(g.value);
         questionButton.style.background = "#1c6a9e";

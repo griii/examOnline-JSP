@@ -2,6 +2,7 @@ package com.guorui.springboottest03.config.MybatisConfig;
 
 
 
+import com.guorui.springboottest03.dao.StudentDao;
 import com.guorui.springboottest03.dao.TeacherDao;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -15,16 +16,23 @@ import java.io.InputStream;
 
 @Configuration
 public class GetTeacherMapperDao {
-    private TeacherDao teacherDao;
+
     @Bean
     public TeacherDao teacherDao() throws IOException {
         InputStream in = Resources.getResourceAsStream("sqlMapDao.xml");
         SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
         SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(in);
         SqlSession ss = sqlSessionFactory.openSession(true);
-
         TeacherDao teacherDao = (TeacherDao) ss.getMapper(TeacherDao.class);
-
         return teacherDao;
+    }
+    @Bean
+    public StudentDao studentDao() throws IOException {
+        InputStream in = Resources.getResourceAsStream("sqlMapDao.xml");
+        SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
+        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(in);
+        SqlSession ss = sqlSessionFactory.openSession(true);
+        StudentDao studentDao = (StudentDao) ss.getMapper(StudentDao.class);
+        return studentDao;
     }
 }

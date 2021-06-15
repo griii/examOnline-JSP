@@ -82,64 +82,12 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">考试信息</div>
-                    <div id="editor" hidden style="align-content: center">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">修改学生信息       <button onclick="f2()" type="button" class="btn btn-default">返回学生列表</button>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="col-md-6">
-                                            <form action="studentUpdata" id="editorForm">
-                                                <div class="form-group">
-                                                    <label>学号</label>
-                                                    <input class="form-control" name="editorStudentId" placeholder="Placeholder" id="editorStudentId">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>姓名</label>
-                                                    <input class="form-control" name="editorStudentName" placeholder="Placeholder" id="editorStudentName">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>密码	<button type="button" style="color: #1c6a9e" onclick="f()">显示密码</button><button type="button" style="color: #9e9e9e" onclick="f1()">隐藏密码</button>
-                                                    </label>
-                                                    <input name="editorStudentP" type="password" class="form-control" id="editorStudentP">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>性别</label>
-                                                    <input name="editorStudentSex" type="text" id="editorStudentSex" hidden>
-                                                    <div class="radio">
-                                                        <label>
-                                                            <input type="checkbox"  id="editorStudentM" value="option1">男
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio">
-                                                        <label>
-                                                            <input type="checkbox"  id="editorStudentF" value="option2">女
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <button type="button" onclick="f3()" class="btn btn-primary">确认修改</button>
-                                                <button onclick="f2()" type="button" class="btn btn-default">取消</button>
-
-                                            </form>
-
-                                        </div>
-                                    </div>
-                                </div><!-- /.col-->
-                            </div><!-- /.row -->
-                        </div>
-                        <form hidden id="killPassword" action="killP">
-                            <input name="studentId" id="killPId">
-                        </form>
-                        <form hidden id="deleteStudent" action="deleteStudent">
-                            <input name="studentId" id="deleteStudentId">
-                        </form>
-                    </div>
 
                     <div class="panel-body" id="all">
                         <table id="table" data-toggle="table" data-url="findAllExam"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="id" data-sort-order="desc">
 
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -158,25 +106,7 @@
 <script src="js/bootstrap-table.js"></script>
 
 <script>
-    welcome();
-    function f() {
-        document.getElementById("editorStudentP").type = "text";
-    }
-    function f1() {
-        document.getElementById("editorStudentP").type = "password";
-    }
-    function f2() {
-        document.getElementById("editor").hidden = true;
-        document.getElementById("all").hidden = false;
-    }
-    function f3() {
-        if (document.getElementById("editorStudentM"))
-            document.getElementById("editorStudentSex").value = "男";
-        else
-            document.getElementById("editorStudentSex").value = "女";
-        document.getElementById("editorForm").submit();
-    }
-
+    welcome()
 
 
     function welcome(){
@@ -211,66 +141,82 @@
             '<button id="bind" type="button" class="btn btn-primary">查看学生考试情况</button>'
         ].join('');
     }
+    function addFunctionAltyStudent(value, row, index) {
+        return [
+            '<button id="findDetail" type="button" class="btn btn-primary">查看试卷详情</button>'+'&nbsp;&nbsp;&nbsp;' +
+            '<button id="back" type="button" class="btn btn-primary">返回考试信息</button>'
+        ].join('');
+    }
     window.operateEvents = {
         'click #bind': function (e, value, row, index) {
-            var editorForm = document.getElementById("editor");
-            var all = document.getElementById("all");
-            var editorStudentId = document.getElementById("editorStudentId");
-            var editorStudentName = document.getElementById("editorStudentName");
-            var editorStudentP = document.getElementById("editorStudentP");
-            var editorStudentM = document.getElementById("editorStudentM");
-            var editorStudentF = document.getElementById("editorStudentF");
-            $.ajax({
-                url: "/exam/teacher/studentTableEditor/"+row.id,
-                type: "get",
-                dataType: 'json',
-                success: function(data){
-                    editorStudentId.value = data.id;
-                    editorStudentName.value = data.name;
-                    editorStudentP.value = data.password;
-                    all.hidden = true;
-                    editorForm.hidden = false;
-                }
-            });
-        }, 'click #unbind': function (e, value, row, index) {
-            var r = confirm("确定要删除学号是"+row.id+"的学生的全部记录吗?")
-            if (r==true){
-                document.getElementById("deleteStudentId").value = row.id;
-                document.getElementById("deleteStudent").submit();
-            }
-        }, 'click #killP': function (e, value, row, index) {
-            var r = confirm("确定要给学号是"+row.id+"的学生将密码重置成00000000吗?")
-            if (r==true){
-                document.getElementById("killPId").value = row.id;
-                document.getElementById("killPassword").submit();
-            }
-            row.id;
+            $('#table').bootstrapTable('destroy');
+            load2();
+            $('#table').bootstrapTable('refresh',{url:"findAllExamInfor?examId=" + row.examId});
+        },
+        'click #back': function (e, value, row, index) {
+            $('#table').bootstrapTable('destroy');
+            load1();
+            $('#table').bootstrapTable('refresh',{url:"findAllExam"});
+        },
+        'click #findDetail': function (e, value, row, index) {
+            window.location = "/exam/examShow/" + row.examId + "/" + row.studentId;
         }
     };
-
-    $('#table').bootstrapTable({
-        columns: [{
-            checkbox: true
-        }, {
-            field: 'examId',
-            title: '考试编号',
-        }, {
-            field: 'examName',
-            title: '考试名称',
-        }, {
-            field: 'examTime',
-            title: '考试限时',
-        }, {
-            field: 'examSetter',
-            title: '发起考试人',
-        },{
-            field: 'operate',
-            title: '操作',
-            events: operateEvents,//给按钮注册事件
-            formatter: addFunctionAlty//表格中增加按钮  
-        }]
-    });
-
+    function load1() {
+        $('#table').bootstrapTable({
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'examId',
+                title: '考试编号',
+            }, {
+                field: 'examName',
+                title: '考试名称',
+            }, {
+                field: 'examStartTime',
+                title: '考试开始时间',
+            }, {
+                field: 'examTime',
+                title: '考试限时（分钟）',
+            }, {
+                field: 'examSetter',
+                title: '发起考试人',
+            }, {
+                field: 'operate',
+                title: '操作',
+                events: operateEvents,//给按钮注册事件
+                formatter: addFunctionAlty//表格中增加按钮  
+            }]
+        });
+    }
+    function load2() {
+        $('#table').bootstrapTable({
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'examId',
+                title: '考试编号',
+            }, {
+                field: 'studentId',
+                title: '学生学号',
+            }, {
+                field: 'name',
+                title: '学生姓名',
+            }, {
+                field: 'sex',
+                title: '学生性别',
+            }, {
+                field: 'score',
+                title: '成绩',
+            }, {
+                field: 'operate',
+                title: '操作',
+                events: operateEvents,//给按钮注册事件
+                formatter: addFunctionAltyStudent//表格中增加按钮  
+            }]
+        });
+    }
+    load1()
 </script>
 </body>
 

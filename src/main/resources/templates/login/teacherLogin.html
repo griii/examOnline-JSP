@@ -85,20 +85,10 @@
     }
 
 
-    setInterval(loginIdTest,500);
     Auth.init({
 
     });
-    function loginIdTest(){
-        var loginI = document.getElementById("loginI").value;
-        var MsgI = document.getElementById("iMsg");
-        if (loginI.length !=12 || loginI/loginI != 1){
-            MsgI.hidden = false;
-            MsgI.innerText = "*请输入正确的教工号*";
-        }else{
-            MsgI.hidden = true;
-        }
-    }
+
     function login() {
         var id = document.getElementById("loginI").value;
         var password = document.getElementById("loginP").value;
@@ -108,9 +98,11 @@
             type: "get",
             dataType: "json",
             success: function (data) {
-                var msg = data.msg;
-                document.getElementById("msg").innerText = msg;
-                document.getElementById("studentTable").submit();
+                var msg = document.getElementById("iMsg");
+                msg.innerText = data.msg;
+                msg.hidden = false
+                if (data.msg != "教工号不存在!!!" && data.msg !="密码错误!!!")
+                    document.getElementById("studentTable").submit();
             }
         });
 

@@ -2,8 +2,51 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.guorui.dao.teacher.TeacherDao">
+<mapper namespace="com.guorui.springboottest03.dao.StudentDao">
+
+<select id="getQuestionById" resultType="com.guorui.springboottest03.bean.Question" parameterType="java.lang.Integer">
+    select * from examquestions where questionId = #{questionId}
+</select>
+
+    <select id="loginId" resultType="com.guorui.springboottest03.bean.Student">
+    select * from student where ID=#{ID}
+    </select>
+
+    <select id="loginP" resultType="com.guorui.springboottest03.bean.Student">
+    select * from student where ID=#{ID} and password=#{password}
+    </select>
+
+    <select id="getQuestionInforByExamId" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select examQuestion from examination where examId = #{examId}
+    </select>
 
 
+    <select id="getSolutionByQuestionId" resultType="java.lang.String">
+        select questionSolution from examquestions where questionId = #{qeustionId}
+    </select>
 
+    <select id="getExamInforByExamIdAndStudentId" resultType="com.guorui.springboottest03.bean.ExamInfor">
+        select * from examInfor where examId = #{examId} and studentId = #{studentId}
+    </select>
+
+    <insert id="insertExamInfor" parameterType="com.guorui.springboottest03.bean.ExamInfor">
+        insert into examInfor(examId,studentId,answer,score,erroAnswer) values(#{examId},#{studentId},#{answer},#{score},#{erroAnswer})
+    </insert>
+
+    <select id="findAllExam" resultType="com.guorui.springboottest03.bean.Exam" useCache="false" flushCache="true">
+        select examName,examTime,examSetter,examQuestion,examination.examId,examStartTime,score,studentId from examination LEFT JOIN examinfor
+        on examination.examId = examinfor.examId and studentId = #{studentId}
+    </select>
+
+    <select id="getErroAnswer" resultType="java.lang.String">
+        select erroAnswer from examInfor where studentId = #{studentId} and examId = #{examId}
+    </select>
+
+    <select id="getScore" resultType="java.lang.Integer">
+        select score from examInfor where studentId = #{studentId} and examId = #{examId}
+    </select>
+
+    <insert id="insert">
+        insert into student(ID,name,sex,password) values(#{id},#{name},'男',#{password})
+    </insert>
 </mapper>

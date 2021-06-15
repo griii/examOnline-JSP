@@ -7,6 +7,7 @@ public class Question {
     private String questionSolution;
     private String questionType;
     private String questionName;
+    private int score;
 
     @Override
     public String toString() {
@@ -17,6 +18,14 @@ public class Question {
                 ", questionType='" + questionType + '\'' +
                 ", questionName='" + questionName + '\'' +
                 '}';
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getQuestionName() {
